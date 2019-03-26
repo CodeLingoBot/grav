@@ -234,26 +234,7 @@ class CleanCommand extends Command
         $this->cleanPaths();
     }
 
-    private function cleanPaths()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<red>DELETING</red>');
-        $anything = false;
-        foreach ($this->paths_to_remove as $path) {
-            $path = ROOT_DIR . $path;
-            if (is_dir($path) && @Folder::delete($path)) {
-                $anything = true;
-                $this->output->writeln('<red>dir:  </red>' . $path);
-            } elseif (is_file($path) && @unlink($path)) {
-                $anything = true;
-                $this->output->writeln('<red>file: </red>' . $path);
-            }
-        }
-        if (!$anything) {
-            $this->output->writeln('');
-            $this->output->writeln('<green>Nothing to clean...</green>');
-        }
-    }
+    
 
     /**
      * Set colors style definition for the formatter.

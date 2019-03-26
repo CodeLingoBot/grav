@@ -370,23 +370,7 @@ abstract class AbstractUri implements UriInterface
     /**
      * @throws \InvalidArgumentException
      */
-    private function validate()
-    {
-        if ($this->host === '' && ($this->scheme === 'http' || $this->scheme === 'https')) {
-            throw new \InvalidArgumentException('Uri with a scheme must have a host');
-        }
-
-        if ($this->getAuthority() === '') {
-            if (0 === strpos($this->path, '//')) {
-                throw new \InvalidArgumentException('The path of a URI without an authority must not start with two slashes \'//\'');
-            }
-            if ($this->scheme === '' && false !== strpos(explode('/', $this->path, 2)[0], ':')) {
-                throw new \InvalidArgumentException('A relative URI must not have a path beginning with a segment containing a colon');
-            }
-        } elseif (isset($this->path[0]) && $this->path[0] !== '/') {
-            throw new \InvalidArgumentException('The path of a URI with an authority must start with a slash \'/\' or be empty');
-        }
-    }
+    
 
     protected function isDefaultPort()
     {
@@ -397,10 +381,5 @@ abstract class AbstractUri implements UriInterface
             || (isset(static::$defaultPorts[$scheme]) && $port === static::$defaultPorts[$scheme]);
     }
 
-    private function unsetDefaultPort()
-    {
-        if ($this->isDefaultPort()) {
-            $this->port = null;
-        }
-    }
+    
 }

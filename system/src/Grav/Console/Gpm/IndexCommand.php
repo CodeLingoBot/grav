@@ -161,40 +161,14 @@ class IndexCommand extends ConsoleCommand
      *
      * @return string
      */
-    private function version($package)
-    {
-        $list      = $this->gpm->{'getUpdatable' . ucfirst($package->package_type)}();
-        $package   = isset($list[$package->slug]) ? $list[$package->slug] : $package;
-        $type      = ucfirst(preg_replace("/s$/", '', $package->package_type));
-        $updatable = $this->gpm->{'is' . $type . 'Updatable'}($package->slug);
-        $installed = $this->gpm->{'is' . $type . 'Installed'}($package->slug);
-        $local     = $this->gpm->{'getInstalled' . $type}($package->slug);
-
-        if (!$installed || !$updatable) {
-            $version   = $installed ? $local->version : $package->version;
-            return "v<green>" . $version . "</green>";
-        }
-
-        if ($updatable) {
-            return "v<red>" . $package->version . "</red> <cyan>-></cyan> v<green>" . $package->available . "</green>";
-        }
-
-        return '';
-    }
+    
 
     /**
      * @param $package
      *
      * @return string
      */
-    private function installed($package)
-    {
-        $package   = isset($list[$package->slug]) ? $list[$package->slug] : $package;
-        $type      = ucfirst(preg_replace("/s$/", '', $package->package_type));
-        $installed = $this->gpm->{'is' . $type . 'Installed'}($package->slug);
-
-        return !$installed ? '<magenta>not installed</magenta>' : '<cyan>installed</cyan>';
-    }
+    
 
     /**
      * @param $data

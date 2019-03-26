@@ -193,48 +193,12 @@ class SelfupgradeCommand extends ConsoleCommand
      *
      * @return string
      */
-    private function download($package)
-    {
-        $tmp_dir = Grav::instance()['locator']->findResource('tmp://', true, true);
-        $this->tmp = $tmp_dir . '/Grav-' . uniqid();
-        $output = Response::get($package['download'], [], [$this, 'progress']);
-
-        Folder::mkdir($this->tmp);
-
-        $this->output->write("\x0D");
-        $this->output->write("  |- Downloading upgrade [" . $this->formatBytes($package['size']) . "]...   100%");
-        $this->output->writeln('');
-
-        file_put_contents($this->tmp . DS . $package['name'], $output);
-
-        return $this->tmp . DS . $package['name'];
-    }
+    
 
     /**
      * @return bool
      */
-    private function upgrade()
-    {
-        Installer::install($this->file, GRAV_ROOT,
-            ['sophisticated' => true, 'overwrite' => true, 'ignore_symlinks' => true]);
-        $errorCode = Installer::lastErrorCode();
-        Folder::delete($this->tmp);
-
-        if ($errorCode & (Installer::ZIP_OPEN_ERROR | Installer::ZIP_EXTRACT_ERROR)) {
-            $this->output->write("\x0D");
-            // extra white spaces to clear out the buffer properly
-            $this->output->writeln("  |- Installing upgrade...    <red>error</red>                             ");
-            $this->output->writeln("  |  '- " . Installer::lastErrorMsg());
-
-            return false;
-        }
-
-        $this->output->write("\x0D");
-        // extra white spaces to clear out the buffer properly
-        $this->output->writeln("  |- Installing upgrade...    <green>ok</green>                             ");
-
-        return true;
-    }
+    
 
     /**
      * @param $progress

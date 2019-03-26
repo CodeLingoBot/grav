@@ -785,11 +785,7 @@ class Page implements PageInterface
     /**
      * Process the Twig page content.
      */
-    private function processTwig()
-    {
-        $twig = Grav::instance()['twig'];
-        $this->content = $twig->processPage($this, $this->content);
-    }
+    
 
     /**
      * Fires the onPageContentProcessed event, and caches the page content using a unique ID for the page

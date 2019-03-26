@@ -299,17 +299,7 @@ class Plugin implements EventSubscriberInterface, \ArrayAccess
      * @param $array2
      * @return array|mixed
      */
-    private function mergeArrays($deep = false, $array1, $array2)
-    {
-        if ($deep === 'merge') {
-            return Utils::arrayMergeRecursiveUnique($array1, $array2);
-        }
-        if ($deep === true) {
-            return array_replace_recursive($array1, $array2);
-        }
-
-        return array_merge($array1, $array2);
-    }
+    
 
     /**
      * Persists to disk the plugin parameters currently stored in the Grav Config object

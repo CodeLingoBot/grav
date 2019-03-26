@@ -1313,51 +1313,23 @@ class Uri
      * @param bool $short
      * @return null|string
      */
-    private function getContentType($short = true)
-    {
-        if (isset($_SERVER['CONTENT_TYPE'])) {
-            $content_type = $_SERVER['CONTENT_TYPE'];
-            if ($short) {
-                return Utils::substrToString($content_type,';');
-            }
-            return $content_type;
-        }
-        return null;
-    }
+    
 
     /**
      * Get the base URI with port if needed
      *
      * @return string
      */
-    private function buildBaseUrl()
-    {
-        return $this->scheme() . $this->host;
-    }
+    
 
     /**
      * Get the Grav Root Path
      *
      * @return string
      */
-    private function buildRootPath()
-    {
-        // In Windows script path uses backslash, convert it:
-        $scriptPath = str_replace('\\', '/', $_SERVER['PHP_SELF']);
-        $rootPath = str_replace(' ', '%20', rtrim(substr($scriptPath, 0, strpos($scriptPath, 'index.php')), '/'));
+    
 
-        return $rootPath;
-    }
-
-    private function buildEnvironment()
-    {
-        // check for localhost variations
-        if ($this->host === '127.0.0.1' || $this->host === '::1') {
-            return 'localhost';
-        }
-
-        return $this->host ?: 'unknown';
-    }
+    
 
     /**
      * Process any params based in this URL, supports any valid delimiter
@@ -1367,20 +1339,5 @@ class Uri
      *
      * @return string
      */
-    private function processParams($uri, $delimiter = ':')
-    {
-        if (strpos($uri, $delimiter) !== false) {
-            preg_match_all(static::paramsRegex(), $uri, $matches, PREG_SET_ORDER);
-
-            foreach ($matches as $match) {
-                $param = explode($delimiter, $match[1]);
-                if (count($param) === 2) {
-                    $plain_var = filter_var($param[1], FILTER_SANITIZE_STRING);
-                    $this->params[$param[0]] = $plain_var;
-                    $uri = str_replace($match[0], '', $uri);
-                }
-            }
-        }
-        return $uri;
-    }
+    
 }

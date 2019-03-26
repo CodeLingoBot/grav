@@ -109,78 +109,10 @@ class InstallCommand extends ConsoleCommand
     /**
      * Clones from Git
      */
-    private function gitclone()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<green>Cloning Bits</green>');
-        $this->output->writeln('============');
-        $this->output->writeln('');
-
-        foreach ($this->config['git'] as $repo => $data) {
-            $this->destination = rtrim($this->destination, DS);
-            $path = $this->destination . DS . $data['path'];
-            if (!file_exists($path)) {
-                exec('cd "' . $this->destination . '" && git clone -b ' . $data['branch'] . ' --depth 1 ' . $data['url'] . ' ' . $data['path'], $output, $return);
-
-                if (!$return) {
-                    $this->output->writeln('<green>SUCCESS</green> cloned <magenta>' . $data['url'] . '</magenta> -> <cyan>' . $path . '</cyan>');
-                } else {
-                    $this->output->writeln('<red>ERROR</red> cloning <magenta>' . $data['url']);
-
-                }
-
-                $this->output->writeln('');
-            } else {
-                $this->output->writeln('<red>' . $path . ' already exists, skipping...</red>');
-                $this->output->writeln('');
-            }
-
-        }
-    }
+    
 
     /**
      * Symlinks
      */
-    private function symlink()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<green>Symlinking Bits</green>');
-        $this->output->writeln('===============');
-        $this->output->writeln('');
-
-        if (!$this->local_config) {
-            $this->output->writeln('<red>No local configuration available, aborting...</red>');
-            $this->output->writeln('');
-            return;
-        }
-
-        exec('cd ' . $this->destination);
-        foreach ($this->config['links'] as $repo => $data) {
-            $repos = (array) $this->local_config[$data['scm'] . '_repos'];
-            $from = false;
-            $to = $this->destination . $data['path'];
-
-            foreach ($repos as $repo) {
-                $path = $repo . $data['src'];
-                if (file_exists($path)) {
-                    $from = $path;
-                    continue;
-                }
-            }
-
-            if (!$from) {
-                $this->output->writeln('<red>source for ' . $data['src'] . ' does not exists, skipping...</red>');
-                $this->output->writeln('');
-            } else {
-                if (!file_exists($to)) {
-                    symlink($from, $to);
-                    $this->output->writeln('<green>SUCCESS</green> symlinked <magenta>' . $data['src'] . '</magenta> -> <cyan>' . $data['path'] . '</cyan>');
-                    $this->output->writeln('');
-                } else {
-                    $this->output->writeln('<red>destination: ' . $to . ' already exists, skipping...</red>');
-                    $this->output->writeln('');
-                }
-            }
-        }
-    }
+    
 }

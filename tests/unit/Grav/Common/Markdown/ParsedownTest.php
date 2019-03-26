@@ -736,9 +736,6 @@ class ParsedownTest extends \Codeception\TestCase\Test
      *
      * @return mixed
      */
-    private function stripLeadingWhitespace($string)
-    {
-        return preg_replace('/^\s*(.*)/', '', $string);
-    }
+    
 
 }

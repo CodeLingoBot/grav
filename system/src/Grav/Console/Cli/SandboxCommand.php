@@ -124,181 +124,35 @@ class SandboxCommand extends ConsoleCommand
     /**
      *
      */
-    private function createDirectories()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<comment>Creating Directories</comment>');
-        $dirs_created = false;
-
-        if (!file_exists($this->destination)) {
-            mkdir($this->destination, 0777, true);
-        }
-
-        foreach ($this->directories as $dir) {
-            if (!file_exists($this->destination . $dir)) {
-                $dirs_created = true;
-                $this->output->writeln('    <cyan>' . $dir . '</cyan>');
-                mkdir($this->destination . $dir, 0777, true);
-            }
-        }
-
-        if (!$dirs_created) {
-            $this->output->writeln('    <red>Directories already exist</red>');
-        }
-    }
+    
 
     /**
      *
      */
-    private function copy()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<comment>Copying Files</comment>');
-
-
-        foreach ($this->mappings as $source => $target) {
-            if ((int)$source == $source) {
-                $source = $target;
-            }
-
-            $from = $this->source . $source;
-            $to = $this->destination . $target;
-
-            $this->output->writeln('    <cyan>' . $source . '</cyan> <comment>-></comment> ' . $to);
-            @Folder::rcopy($from, $to);
-        }
-    }
+    
 
     /**
      *
      */
-    private function symlink()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<comment>Resetting Symbolic Links</comment>');
-
-
-        foreach ($this->mappings as $source => $target) {
-            if ((int)$source == $source) {
-                $source = $target;
-            }
-
-            $from = $this->source . $source;
-            $to = $this->destination . $target;
-
-            $this->output->writeln('    <cyan>' . $source . '</cyan> <comment>-></comment> ' . $to);
-
-            if (is_dir($to)) {
-                @Folder::delete($to);
-            } else {
-                @unlink($to);
-            }
-            symlink($from, $to);
-        }
-    }
+    
 
     /**
      *
      */
-    private function initFiles()
-    {
-        $this->check();
-
-        $this->output->writeln('');
-        $this->output->writeln('<comment>File Initializing</comment>');
-        $files_init = false;
-
-        // Copy files if they do not exist
-        foreach ($this->files as $source => $target) {
-            if ((int)$source == $source) {
-                $source = $target;
-            }
-
-            $from = $this->source . $source;
-            $to = $this->destination . $target;
-
-            if (!file_exists($to)) {
-                $files_init = true;
-                copy($from, $to);
-                $this->output->writeln('    <cyan>' . $target . '</cyan> <comment>-></comment> Created');
-            }
-        }
-
-        if (!$files_init) {
-            $this->output->writeln('    <red>Files already exist</red>');
-        }
-    }
+    
 
     /**
      *
      */
-    private function pages()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<comment>Pages Initializing</comment>');
-
-        // get pages files and initialize if no pages exist
-        $pages_dir = $this->destination . '/user/pages';
-        $pages_files = array_diff(scandir($pages_dir), ['..', '.']);
-
-        if (count($pages_files) == 0) {
-            $destination = $this->source . '/user/pages';
-            Folder::rcopy($destination, $pages_dir);
-            $this->output->writeln('    <cyan>' . $destination . '</cyan> <comment>-></comment> Created');
-
-        }
-    }
+    
 
     /**
      *
      */
-    private function perms()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<comment>Permissions Initializing</comment>');
-
-        $dir_perms = 0755;
-
-        $binaries = glob($this->destination . DS . 'bin' . DS . '*');
-
-        foreach ($binaries as $bin) {
-            chmod($bin, $dir_perms);
-            $this->output->writeln('    <cyan>bin/' . basename($bin) . '</cyan> permissions reset to ' . decoct($dir_perms));
-        }
-
-        $this->output->writeln("");
-    }
+    
 
     /**
      *
      */
-    private function check()
-    {
-        $success = true;
-
-        if (!file_exists($this->destination)) {
-            $this->output->writeln('    file: <red>$this->destination</red> does not exist!');
-            $success = false;
-        }
-
-        foreach ($this->directories as $dir) {
-            if (!file_exists($this->destination . $dir)) {
-                $this->output->writeln('    directory: <red>' . $dir . '</red> does not exist!');
-                $success = false;
-            }
-        }
-
-        foreach ($this->mappings as $target => $link) {
-            if (!file_exists($this->destination . $target)) {
-                $this->output->writeln('    mappings: <red>' . $target . '</red> does not exist!');
-                $success = false;
-            }
-        }
-
-        if (!$success) {
-            $this->output->writeln('');
-            $this->output->writeln('<comment>install should be run with --symlink|--s to symlink first</comment>');
-            exit;
-        }
-    }
+    
 }

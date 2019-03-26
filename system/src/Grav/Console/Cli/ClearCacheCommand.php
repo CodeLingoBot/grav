@@ -42,29 +42,6 @@ class ClearCacheCommand extends ConsoleCommand
     /**
      * loops over the array of paths and deletes the files/folders
      */
-    private function cleanPaths()
-    {
-        $this->output->writeln('');
-        $this->output->writeln('<magenta>Clearing cache</magenta>');
-        $this->output->writeln('');
-
-        if ($this->input->getOption('all')) {
-            $remove = 'all';
-        } elseif ($this->input->getOption('assets-only')) {
-            $remove = 'assets-only';
-        } elseif ($this->input->getOption('images-only')) {
-            $remove = 'images-only';
-        } elseif ($this->input->getOption('cache-only')) {
-            $remove = 'cache-only';
-        } elseif ($this->input->getOption('tmp-only')) {
-            $remove = 'tmp-only';
-        } else {
-            $remove = 'standard';
-        }
-
-        foreach (Cache::clearCache($remove) as $result) {
-            $this->output->writeln($result);
-        }
-    }
+    
 }
 

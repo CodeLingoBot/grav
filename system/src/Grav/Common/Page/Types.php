@@ -115,26 +115,5 @@ class Types implements \ArrayAccess, \Iterator, \Countable
         return $list;
     }
 
-    private function findBlueprints($uri)
-    {
-        $options = [
-            'compare' => 'Filename',
-            'pattern' => '|\.yaml$|',
-            'filters' => [
-                'key' => '|\.yaml$|'
-                ],
-            'key' => 'SubPathName',
-            'value' => 'PathName',
-        ];
-
-        /** @var UniformResourceLocator $locator */
-        $locator = Grav::instance()['locator'];
-        if ($locator->isStream($uri)) {
-            $options['value'] = 'Url';
-        }
-
-        $list = Folder::all($uri, $options);
-
-        return $list;
-    }
+    
 }

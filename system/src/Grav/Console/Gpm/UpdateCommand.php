@@ -238,48 +238,5 @@ class UpdateCommand extends ConsoleCommand
      *
      * @return array
      */
-    private function userInputPackages($only_packages)
-    {
-        $found = ['total' => 0];
-        $ignore = [];
-
-        if (!count($only_packages)) {
-            $this->output->writeln('');
-        } else {
-            foreach ($only_packages as $only_package) {
-                $find = $this->gpm->findPackage($only_package);
-
-                if (!$find || (!$this->overwrite && !$this->gpm->isUpdatable($find->slug))) {
-                    $name = isset($find->slug) ? $find->slug : $only_package;
-                    $ignore[$name] = $name;
-                } else {
-                    $found[$find->slug] = $find;
-                    $found['total']++;
-                }
-            }
-
-            if ($found['total']) {
-                $list = $found;
-                unset($list['total']);
-                $list = array_keys($list);
-
-                if ($found['total'] !== $this->data['total']) {
-                    $this->output->write(", only <magenta>" . $found['total'] . "</magenta> will be updated");
-                }
-
-                $this->output->writeln('');
-                $this->output->writeln("Limiting updates for only <cyan>" . implode('</cyan>, <cyan>',
-                        $list) . "</cyan>");
-            }
-
-            if (count($ignore)) {
-                $this->output->writeln('');
-                $this->output->writeln("Packages not found or not requiring updates: <red>" . implode('</red>, <red>',
-                        $ignore) . "</red>");
-
-            }
-        }
-
-        return $found;
-    }
+    
 }

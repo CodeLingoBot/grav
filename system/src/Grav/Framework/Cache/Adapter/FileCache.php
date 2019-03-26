@@ -171,26 +171,7 @@ class FileCache extends AbstractCache
      * @param int|null $expiresAt
      * @return bool
      */
-    private function write($file, $data, $expiresAt = null)
-    {
-        set_error_handler(__CLASS__.'::throwError');
-
-        try {
-            if ($this->tmp === null) {
-                $this->tmp = $this->directory . uniqid('', true);
-            }
-
-            file_put_contents($this->tmp, $data);
-
-            if ($expiresAt !== null) {
-                touch($this->tmp, $expiresAt);
-            }
-
-            return rename($this->tmp, $file);
-        } finally {
-            restore_error_handler();
-        }
-    }
+    
 
     /**
      * @internal
